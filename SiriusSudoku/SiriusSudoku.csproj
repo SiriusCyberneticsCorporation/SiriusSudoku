@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F6D2A99-17A4-4552-BAEF-3DF2F4392D09}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SiriusSudoku</RootNamespace>
+    <AssemblyName>SiriusSudoku</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SiriusSudoku.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="NumberSelectionButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NumberSelectionButton.Designer.cs">
+      <DependentUpon>NumberSelectionButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NumberSelectionUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NumberSelectionUserControl.Designer.cs">
+      <DependentUpon>NumberSelectionUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Position.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiriusSudokuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SiriusSudokuForm.designer.cs">
+      <DependentUpon>SiriusSudokuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SudokuGameBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SudokuGameBoard.Designer.cs">
+      <DependentUpon>SudokuGameBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SudokuGenerator.cs" />
+    <Compile Include="SudokuGridSquare.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SudokuGridSquare.designer.cs">
+      <DependentUpon>SudokuGridSquare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SudokuThreeByThreeGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SudokuThreeByThreeGrid.Designer.cs">
+      <DependentUpon>SudokuThreeByThreeGrid.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="NumberSelectionButton.resx">
+      <DependentUpon>NumberSelectionButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NumberSelectionUserControl.resx">
+      <DependentUpon>NumberSelectionUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="SiriusSudokuForm.resx">
+      <DependentUpon>SiriusSudokuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SudokuGameBoard.resx">
+      <DependentUpon>SudokuGameBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SudokuGridSquare.resx">
+      <DependentUpon>SudokuGridSquare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SudokuThreeByThreeGrid.resx">
+      <DependentUpon>SudokuThreeByThreeGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NOT Eraser 256x256.png" />
+    <None Include="Eraser 256x256.png" />
+    <None Include="Pencil 256x256.png" />
+    <None Include="NOT Pencil 256x256.png" />
+    <Content Include="SiriusSudoku.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
