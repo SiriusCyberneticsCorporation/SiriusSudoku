@@ -12,7 +12,7 @@ namespace SiriusSudoku
 {
 	public partial class SudokuGridSquare : UserControl
 	{
-		public delegate void CellTapHandler(Position cellPosition);
+		public delegate void CellTapHandler(Position cellPosition, int currentNumber);
 		public event CellTapHandler OnCellTapped;
 		public event CellTapHandler OnCellRightTapped;
 		public event CellTapHandler OnCellDoubleTapped;
@@ -270,16 +270,16 @@ namespace SiriusSudoku
 		{
 			if (e.Button == System.Windows.Forms.MouseButtons.Left)
 			{
-				if (!m_numberGiven && OnCellTapped != null)
+				if (OnCellTapped != null)
 				{
-					OnCellTapped(m_cellPosition);
+					OnCellTapped(m_cellPosition, m_number);
 				}
 			}
 			else if (e.Button == System.Windows.Forms.MouseButtons.Right)
 			{
 				if (OnCellRightTapped != null)
 				{
-					OnCellRightTapped(m_cellPosition);
+					OnCellRightTapped(m_cellPosition, m_number);
 				}
 			}
 		}
@@ -298,7 +298,7 @@ namespace SiriusSudoku
 			}
 			if (OnCellDoubleTapped != null)
 			{
-				OnCellDoubleTapped(m_cellPosition);
+				OnCellDoubleTapped(m_cellPosition, m_number);
 			}
 		}
 	}

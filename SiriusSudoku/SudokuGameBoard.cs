@@ -11,6 +11,9 @@ namespace SiriusSudoku
 {
 	public partial class SudokuGameBoard : UserControl
 	{
+		public delegate void GridSelectedNumberHandler(int number);
+		public event GridSelectedNumberHandler OnGridSelectedNumber;
+
 		public delegate void CellTapHandler(Position gridPosition, Position cellPosition);
 		public event CellTapHandler OnCellTapped;
 		//		public event CellTapHandler OnCellDoubleTapped;
@@ -158,30 +161,40 @@ namespace SiriusSudoku
 		}
 
 
-		void GridCellTapped(Position gridPosition, Position cellPosition)
+		void GridCellTapped(Position gridPosition, Position cellPosition, int currentNumber)
 		{
-			if (m_solutionGrid != null && m_numberSelected > 0)
+			if (m_solutionGrid != null) 
 			{
-				if (m_pencillingIn)
+				if (currentNumber > 0)
 				{
-					TogglePencilledInNumber(gridPosition, m_numberSelected, cellPosition);
+					if (OnGridSelectedNumber != null)
+					{
+						OnGridSelectedNumber(currentNumber);
+					}
 				}
-				else if (m_erasing)
+				else if (m_numberSelected > 0)
 				{
-					ClearGridNumber(gridPosition, cellPosition);
-				}
-				else
-				{
-					SetUserNumber(gridPosition, cellPosition, m_numberSelected);
-				}
-				if (OnCellTapped != null)
-				{
-					OnCellTapped(gridPosition, cellPosition);
+					if (m_pencillingIn)
+					{
+						TogglePencilledInNumber(gridPosition, m_numberSelected, cellPosition);
+					}
+					else if (m_erasing)
+					{
+						ClearGridNumber(gridPosition, cellPosition);
+					}
+					else
+					{
+						SetUserNumber(gridPosition, cellPosition, m_numberSelected);
+					}
+					if (OnCellTapped != null)
+					{
+						OnCellTapped(gridPosition, cellPosition);
+					}
 				}
 			}
 		}
 
-		void GridCellRightTapped(Position gridPosition, Position cellPosition)
+		void GridCellRightTapped(Position gridPosition, Position cellPosition, int currentNumber)
 		{
 			if (m_numberSelected > 0)
 			{

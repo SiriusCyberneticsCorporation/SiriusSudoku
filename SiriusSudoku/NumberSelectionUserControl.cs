@@ -27,6 +27,11 @@ namespace SiriusSudoku
 			InitializeComponent();
 		}
 
+		public void SelectNumber(int number)
+		{
+			OnNumberButtonTapped(number);
+		}
+
 		public void ShowNumberCount(bool show)
 		{
 			for (int i = 0; i < 9; i++)
@@ -70,16 +75,16 @@ namespace SiriusSudoku
 			}
 		}
 
-		void OnNumberButtonTapped(int buttonNumber)
+		void OnNumberButtonTapped(int number)
 		{
-			for (int number = 0; number < 9; number++)
+			for (int button = 0; button < 9; button++)
 			{
-				m_numberButtons[number].Selected = (number + 1 == buttonNumber);
+				m_numberButtons[button].Selected = (button + 1 == number);
 			}
 
 			if (OnNumberSelected != null)
 			{
-				OnNumberSelected(buttonNumber);
+				OnNumberSelected(number);
 			}
 		}
 

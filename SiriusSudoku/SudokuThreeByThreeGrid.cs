@@ -11,7 +11,7 @@ namespace SiriusSudoku
 {
 	public partial class SudokuThreeByThreeGrid : UserControl
 	{
-		public delegate void CellTapHandler(Position gridPosition, Position cellPosition);
+		public delegate void CellTapHandler(Position gridPosition, Position cellPosition, int currentNumber);
 		public event CellTapHandler OnCellTapped;
 		public event CellTapHandler OnCellRightTapped;
 		//		public event CellTapHandler OnCellDoubleTapped;
@@ -55,19 +55,19 @@ namespace SiriusSudoku
 		{
 		}
 
-		void GridCellTapped(Position cellPosition)
+		void GridCellTapped(Position cellPosition, int currentNumber)
 		{
 			if (OnCellTapped != null)
 			{
-				OnCellTapped(m_gridPosition, cellPosition);
+				OnCellTapped(m_gridPosition, cellPosition, currentNumber);
 			}
 		}
 
-		void GridCellRightTapped(Position cellPosition)
+		void GridCellRightTapped(Position cellPosition, int currentNumber)
 		{
 			if (OnCellRightTapped != null)
 			{
-				OnCellRightTapped(m_gridPosition, cellPosition);
+				OnCellRightTapped(m_gridPosition, cellPosition, currentNumber);
 			}
 		}
 

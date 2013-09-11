@@ -16,7 +16,7 @@ namespace SiriusSudoku
 		private bool m_gamePaused = false;
 		private bool m_saveToHallOfFame = false;
 		private bool m_enteringPuzzle = false;
-		private DateTime m_gameStartTime = DateTime.Now;
+		private int m_gameDurationSeconds = 0;
 		SudokuGenerator m_generator = null;
 
 		public SiriusSudokuForm()
@@ -37,6 +37,7 @@ namespace SiriusSudoku
 
 			TheGameBoard.OnCellTapped += TheGameBoard_OnCellTapped;
 			TheGameBoard.OnCellCleared += TheGameBoard_OnCellCleared;
+			TheGameBoard.OnGridSelectedNumber += new SudokuGameBoard.GridSelectedNumberHandler(TheGameBoard_OnGridSelectedNumber);
 		}
 
 		private void TheGameBoard_OnCellTapped(Position gridPosition, Position cellPosition)
@@ -79,6 +80,11 @@ namespace SiriusSudoku
 			NumberSelectionPanel.UpdateNumberCount(TheGameBoard.SuppliedNumberCount);
 		}
 
+		void TheGameBoard_OnGridSelectedNumber(int number)
+		{
+			NumberSelectionPanel.SelectNumber(number);
+		}
+
 		void NumberSelectionPanel_OnNumberSelected(int number)
 		{
 			TheGameBoard.NumberSelected = number;
@@ -112,7 +118,7 @@ namespace SiriusSudoku
 			TheGameBoard.DisplayGrid(gameDifficulty);
 			NumberSelectionPanel.UpdateNumberCount(TheGameBoard.SuppliedNumberCount);
 			NumberSelectionPanel.ShowNumberCount(ShowNumberCountCheckBox.Checked);
-			m_gameStartTime = DateTime.Now;
+			m_gameDurationSeconds = 0;
 			m_gameActive = true;
 			m_gamePaused = false;
 			m_saveToHallOfFame = !ShowErrorsCheckBox.Checked;
@@ -158,14 +164,17 @@ namespace SiriusSudoku
 		{
 			if (m_gameActive && !m_gamePaused)
 			{
-				TimeSpan duration = (DateTime.Now - m_gameStartTime);
-				if (duration.Hours > 0)
+				m_gameDurationSeconds++;
+				if ((m_gameDurationSeconds/3600) > 0)
 				{
-					TimerToolStripTextBox.Text = duration.ToString("hh':'mm':'ss");
+					TimerToolStripTextBox.Text = (m_gameDurationSeconds / 3600).ToString("00") + ":" +
+												 ((m_gameDurationSeconds / 60) % 60).ToString("00") + ":" +
+												 (m_gameDurationSeconds % 60).ToString("00");
 				}
 				else
 				{
-					TimerToolStripTextBox.Text = duration.ToString("mm':'ss");
+					TimerToolStripTextBox.Text = ((m_gameDurationSeconds / 60) % 60).ToString("00") + ":" +
+												 (m_gameDurationSeconds % 60).ToString("00");
 				}
 			}
 		}
@@ -232,7 +241,7 @@ namespace SiriusSudoku
 			TheGameBoard.SolutionGrid = m_generator.SolveGrid(TheGameBoard.SolutionGrid);
 			NumberSelectionPanel.UpdateNumberCount(TheGameBoard.SuppliedNumberCount);
 			NumberSelectionPanel.ShowNumberCount(ShowNumberCountCheckBox.Checked);
-			m_gameStartTime = DateTime.Now;
+			m_gameDurationSeconds = 0;
 			m_gameActive = true;
 			m_gamePaused = false;
 			m_saveToHallOfFame = !ShowErrorsCheckBox.Checked;
@@ -245,6 +254,11 @@ namespace SiriusSudoku
 		}
 
 		private void savePuzzleToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void HallOfFameToolStripButton_Click(object sender, EventArgs e)
 		{
 
 		}
