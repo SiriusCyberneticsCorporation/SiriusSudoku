@@ -21,11 +21,38 @@ namespace SiriusSudoku
 		public delegate void CellClearedHandler(int number, Position gridPosition, Position cellPosition);
 		public event CellClearedHandler OnCellCleared;
 
+		[Browsable(false)]
+		public int NumberSelected
+		{
+			get { return m_numberSelected; }
+			set
+			{
+				m_numberSelected = value;
+				for (int row = 0; row < m_gridSize; row++)
+				{
+					for (int column = 0; column < m_gridSize; column++)
+					{
+						int gridRow = row / 3;
+						int gridColumn = column / 3;
+
+						m_theGrids[gridRow, gridColumn].NumberSelected = value;
+					}
+				}
+			}
+		}
+
 		public int GridSize { get { return m_gridSize; } set { m_gridSize = value; } }
-		public int NumberSelected { get { return m_numberSelected; } set { m_numberSelected = value; } }
+
+		[Browsable(false)]
 		public bool PencillingIn { set { m_pencillingIn = value; } }
+
+		[Browsable(false)]
 		public bool Erasing { set { m_erasing = value; } }
+
+		[Browsable(false)]
 		public int[] SuppliedNumberCount { get { return m_suppliedNumberCount; } }
+
+		[Browsable(false)]
 		public int[,] SolutionGrid { get { return m_solutionGrid; } set { m_solutionGrid = value; } }
 
 		private static int m_gridSize = 9;
@@ -35,6 +62,7 @@ namespace SiriusSudoku
 		private bool m_pencillingIn = false;
 		private bool m_erasing = false;
 		private bool m_showErrors = false;
+		private bool m_highlightPencilMarks = false;
 		private int[] m_suppliedNumberCount = null;
 		private int[,] m_solutionGrid = null;
 		private Random m_randomiser = new Random(DateTime.Now.Millisecond);
@@ -68,6 +96,7 @@ namespace SiriusSudoku
 			m_suppliedNumberCount = new int[m_gridSize];
 		}
 
+		[Browsable(false)]
 		public bool ShowErrors
 		{
 			get { return m_showErrors; }
@@ -82,6 +111,26 @@ namespace SiriusSudoku
 						int gridColumn = column / 3;
 
 						m_theGrids[gridRow, gridColumn].ShowErrors(new Position(row % 3, column % 3), m_showErrors);
+					}
+				}
+			}
+		}
+
+		[Browsable(false)]
+		public bool HighlightPencilMarks
+		{
+			get { return m_highlightPencilMarks; }
+			set
+			{
+				m_highlightPencilMarks = value;
+				for (int row = 0; row < m_gridSize; row++)
+				{
+					for (int column = 0; column < m_gridSize; column++)
+					{
+						int gridRow = row / 3;
+						int gridColumn = column / 3;
+
+						m_theGrids[gridRow, gridColumn].HighlightPencilMarks(new Position(row % 3, column % 3), m_highlightPencilMarks);
 					}
 				}
 			}
@@ -108,51 +157,22 @@ namespace SiriusSudoku
 			return false;
 		}
 
-		public void DisplayGrid(Difficulty gameDifficulty)
+		public void DisplayGrid(int[,] displayGrid)
 		{
-			if (gameDifficulty == Difficulty.UserSupplied)
+			for (int row = 0; row < 9; row++)
 			{
-				for (int row = 0; row < 9; row++)
+				for (int column = 0; column < 9; column++)
 				{
-					for (int column = 0; column < 9; column++)
-					{
-						int gridRow = row / 3;
-						int gridColumn = column / 3;
-						int value = m_solutionGrid[row, column];
-
-						if (value > 0)
-						{
-							SetGivenNumber(new Position(gridRow, gridColumn), new Position(row % 3, column % 3), value);
-						}
-					}
-				}
-			}
-			else
-			{
-				List<Position> allPositions = new List<Position>();
-				for (int row = 0; row < m_gridSize; row++)
-				{
-					for (int column = 0; column < m_gridSize; column++)
-					{
-						allPositions.Add(new Position(row, column));
-					}
-				}
-
-				for (int i = 0; i < (int)gameDifficulty; i++)
-				{
-					int index = m_randomiser.Next(allPositions.Count);
-
-					int row = allPositions[index].Row;
-					int column = allPositions[index].Column;
 					int gridRow = row / 3;
 					int gridColumn = column / 3;
-					int value = m_solutionGrid[row, column];
+					int value = displayGrid[row, column];
 
-					allPositions.RemoveAt(index);
-
-					SetGivenNumber(new Position(gridRow, gridColumn), new Position(row % 3, column % 3), value);
+					if (value > 0)
+					{
+						SetGivenNumber(new Position(gridRow, gridColumn), new Position(row % 3, column % 3), value);
+					}
 				}
-			}
+			}			
 		}
 
 		private void SudokuGameBoard_Load(object sender, EventArgs e)

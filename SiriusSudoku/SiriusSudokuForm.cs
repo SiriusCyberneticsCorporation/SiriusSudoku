@@ -107,15 +107,15 @@ namespace SiriusSudoku
 
 		private void StartNewGame(Difficulty gameDifficulty)
 		{
+			Cursor = Cursors.WaitCursor;
+
+			m_generator.GenerateSudokuGrid(gameDifficulty);
+
 			TheGameBoard.ClearGrid();
-			TheGameBoard.SolutionGrid = m_generator.GenerateGrid();
-
-			if (!m_generator.IsUnique())
-			{
-				MessageBox.Show("NON-Unique solution generated!");
-			}
-
-			TheGameBoard.DisplayGrid(gameDifficulty);
+			TheGameBoard.SolutionGrid = m_generator.SolutionGrid;
+			TheGameBoard.DisplayGrid(m_generator.DisplayGrid);
+			TheGameBoard.ShowErrors = ShowErrorsCheckBox.Checked;
+			TheGameBoard.HighlightPencilMarks = HighlightPencilMarksCheckBox.Checked;
 			NumberSelectionPanel.UpdateNumberCount(TheGameBoard.SuppliedNumberCount);
 			NumberSelectionPanel.ShowNumberCount(ShowNumberCountCheckBox.Checked);
 			m_gameDurationSeconds = 0;
@@ -123,6 +123,8 @@ namespace SiriusSudoku
 			m_gamePaused = false;
 			m_saveToHallOfFame = !ShowErrorsCheckBox.Checked;
 			PauseToolStripButton.Enabled = true;
+
+			Cursor = Cursors.Default;
 		}		
 
 		private void EasyToolStripButton_Click(object sender, EventArgs e)
@@ -151,7 +153,17 @@ namespace SiriusSudoku
 
 			if (ShowErrorsCheckBox.Checked)
 			{
-				m_saveToHallOfFame = true;
+				m_saveToHallOfFame = false;
+			}
+		}
+
+		private void HighlightPencilMarksCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			TheGameBoard.HighlightPencilMarks = HighlightPencilMarksCheckBox.Checked;
+
+			if (HighlightPencilMarksCheckBox.Checked)
+			{
+				m_saveToHallOfFame = false;
 			}
 		}
 
@@ -237,8 +249,18 @@ namespace SiriusSudoku
 		{
 			m_enteringPuzzle = false;
 			TheGameBoard.ClearGrid();
-			TheGameBoard.DisplayGrid(Difficulty.UserSupplied);
-			TheGameBoard.SolutionGrid = m_generator.SolveGrid(TheGameBoard.SolutionGrid);
+
+			int[,] grid = m_generator.CreateBlankGrid();
+			Buffer.BlockCopy(TheGameBoard.SolutionGrid, 0, grid, 0, TheGameBoard.SolutionGrid.Length * sizeof(int));
+			
+			m_generator.DisplayGrid = TheGameBoard.SolutionGrid;
+			m_generator.SolveGrid(ref grid);
+			m_generator.SolutionGrid = grid;
+			TheGameBoard.SolutionGrid = m_generator.SolutionGrid;
+			TheGameBoard.DisplayGrid(m_generator.DisplayGrid);
+
+//			TheGameBoard.DisplayGrid(Difficulty.UserSupplied);
+//			TheGameBoard.SolutionGrid = 
 			NumberSelectionPanel.UpdateNumberCount(TheGameBoard.SuppliedNumberCount);
 			NumberSelectionPanel.ShowNumberCount(ShowNumberCountCheckBox.Checked);
 			m_gameDurationSeconds = 0;
@@ -261,6 +283,14 @@ namespace SiriusSudoku
 		private void HallOfFameToolStripButton_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void SavePuzzle()
+		{
+		}
+
+		private void LoadPuzzle()
+		{
 		}
 	}
 }

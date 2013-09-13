@@ -20,12 +20,19 @@ namespace SiriusSudoku
 		public delegate void CellClearedHandler(int number, Position cellPosition);
 		public event CellClearedHandler OnCellCleared;
 
+		[Browsable(false)]
 		public int Number { get { return m_number; } }
+
+		[Browsable(false)]
+		public int NumberSelected { set { m_numberSelected = value; Invalidate(); } }
+
+		[Browsable(false)]
 		public Position CellPosition { set { m_cellPosition = value; } }
 
 		public void ClearCell()
 		{
 			m_number = -1;
+			m_numberSelected = -1;
 			m_selected = false;
 			m_inLineWithSelected = false;
 			m_sameNumberAsSelected = false;
@@ -95,6 +102,7 @@ namespace SiriusSudoku
 			Invalidate();
 		}
 
+		[Browsable(false)]
 		public bool ShowErrors 
 		{ 
 			get { return m_showErrors; } 
@@ -105,11 +113,24 @@ namespace SiriusSudoku
 			} 
 		}
 
+		[Browsable(false)]
+		public bool HighlightPencils
+		{
+			get { return m_highlightPencils; }
+			set 
+			{
+				m_highlightPencils = value;
+				Invalidate();
+			}
+		}
+
 		private int m_number = -1;
+		private int m_numberSelected = -1;
 		private bool m_selected = false;
 		private bool m_inLineWithSelected = false;
 		private bool m_sameNumberAsSelected = false;
 		private bool m_showErrors = false;
+		private bool m_highlightPencils = false;
 		private bool m_numberGiven = false;
 		private bool m_numberIsCorrect = true;
 		private bool m_numberProvidedByPlayer = false;
@@ -124,6 +145,7 @@ namespace SiriusSudoku
 		private Brush m_textBrush = new SolidBrush(Color.Black);
 		private Brush m_givenTextBrush = new SolidBrush(Color.Navy);
 		private Brush m_pencilTextBrush = new SolidBrush(Color.Black);
+		private Brush m_highlightedPencilTextBrush = new SolidBrush(Color.Red);
 		private Brush m_borderBrush = new SolidBrush(Color.DarkGray);
 		private Brush m_incorrectNumberBrush = new SolidBrush(Color.Red);
 		private Brush m_defaultBackgroundBrush = new SolidBrush(Color.White);
@@ -137,7 +159,7 @@ namespace SiriusSudoku
 		{
 			InitializeComponent();
 
-			m_smallFont = this.Font;
+			m_smallFont = new Font(this.Font.FontFamily, 10, FontStyle.Bold);
 			m_bigFont = new Font(this.Font.FontFamily, 36);
 			m_bigFontBold = new Font(this.Font.FontFamily, 36, FontStyle.Bold);
 			m_stringFormat.Alignment = StringAlignment.Center;
@@ -201,59 +223,57 @@ namespace SiriusSudoku
 				{
 					foreach (int pencilled in m_numbersPencilled)
 					{
-						string letter = string.Empty;
-						float left = 3;
+						float left = 2;
 						float top = 2;
+
 						switch (pencilled)
 						{
 							case 1:
-								letter = "1";
 								left += spaceSize;
 								top += spaceSize;
 								break;
 							case 2:
-								letter = "2";
 								left += spaceSize * 2 + pencilledSize;
 								top += spaceSize;
 								break;
 							case 3:
-								letter = "3";
 								left += spaceSize * 3 + pencilledSize * 2;
 								top += spaceSize;
 								break;
 							case 4:
-								letter = "4";
 								left += spaceSize;
 								top += spaceSize * 2 + pencilledSize;
 								break;
 							case 5:
-								letter = "5";
 								left += spaceSize * 2 + pencilledSize;
 								top += spaceSize * 2 + pencilledSize;
 								break;
 							case 6:
-								letter = "6";
 								left += spaceSize * 3 + pencilledSize * 2;
 								top += spaceSize * 2 + pencilledSize;
 								break;
 							case 7:
-								letter = "7";
 								left += spaceSize;
 								top += spaceSize * 3 + pencilledSize * 2;
 								break;
 							case 8:
-								letter = "8";
 								left += spaceSize * 2 + pencilledSize;
 								top += spaceSize * 3 + pencilledSize * 2;
 								break;
 							case 9:
-								letter = "9";
 								left += spaceSize * 3 + pencilledSize * 2;
 								top += spaceSize * 3 + pencilledSize * 2;
 								break;
 						}
 
-						g.DrawString(letter, m_smallFont, m_pencilTextBrush, left, top);
+						if (m_highlightPencils && m_numberSelected == pencilled)
+						{
+							g.DrawString(pencilled.ToString(), m_smallFont, m_highlightedPencilTextBrush, left, top);
+						}
+						else
+						{
+							g.DrawString(pencilled.ToString(), m_smallFont, m_pencilTextBrush, left, top);
+						}
 					}
 				}
 

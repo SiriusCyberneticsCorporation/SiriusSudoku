@@ -19,8 +19,12 @@ namespace SiriusSudoku
 		int m_gameSize = -1;
 		bool m_doneIterating = false;
 		int[] m_possibleChoices = null;
-		int[,] m_finalGrid = null;
+		int[,] m_solutionGrid = null;
+		int[,] m_displayGrid = null;
 		Random m_randomiser = null;
+
+		public int[,] SolutionGrid { get { return m_solutionGrid; } set { m_solutionGrid = value; } }
+		public int[,] DisplayGrid { get { return m_displayGrid; } set { m_displayGrid = value; } }
 
 		public SudokuGenerator(int gameSize)
 		{
@@ -44,8 +48,36 @@ namespace SiriusSudoku
 		{
 			return new int[m_gameSize, m_gameSize];
 		}
+		
+		public void GenerateSudokuGrid(Difficulty gameDifficulty)
+		{
+			m_solutionGrid = GenerateSolution();
+			m_displayGrid = CreateBlankGrid();
 
-		public int[,] GenerateGrid()
+			Buffer.BlockCopy(m_solutionGrid, 0, m_displayGrid, 0, m_solutionGrid.Length * sizeof(int));
+			GenerateDisplayGrid(gameDifficulty, ref m_displayGrid);
+		}
+
+		public void SolveGrid(ref int[,] grid)
+		{
+			int[,] temporaryGrid = null;
+			
+			m_doneIterating = false;
+			
+			for(int i = 0; i < 100; i++)
+			{
+				temporaryGrid = new int[m_gameSize, m_gameSize];
+				Buffer.BlockCopy(grid, 0, temporaryGrid, 0, grid.Length * sizeof(int));
+				
+				if (IterativelyFillGrid(temporaryGrid) || m_doneIterating)
+				{
+					Buffer.BlockCopy(temporaryGrid, 0, grid, 0, grid.Length * sizeof(int));
+					break;
+				}
+			}
+		}
+
+		private int[,] GenerateSolution()
 		{
 			int[,] grid = CreateBlankGrid();
 
@@ -68,37 +100,123 @@ namespace SiriusSudoku
 				FillGridSpot(grid, row, 0, choices[index]);
 				choices.RemoveAt(index);
 			}
-			return SolveGrid(grid);
+
+			SolveGrid(ref grid);
+
+			return grid;
 		}
 
-		public int[,] SolveGrid(int[,] grid)
+		private void GenerateDisplayGrid(Difficulty gameDifficulty, ref int[,] grid)
 		{
-			m_finalGrid = grid;
+			int numberOfBlanks = 0;
+			int minimumNumbersPerRowColumn = 0;
 
-			int[,] temporaryGrid = null;
-			
-			m_doneIterating = false;
-			
-			for(int i = 0; i < 100; i++)
+			switch (gameDifficulty)
 			{
-				temporaryGrid = new int[m_gameSize, m_gameSize];
-				Buffer.BlockCopy(m_finalGrid, 0, temporaryGrid, 0, m_finalGrid.Length * sizeof(int));
-				
-				if (IterativelyFillGrid(temporaryGrid) || m_doneIterating)
+				case Difficulty.TooEasy:
+					numberOfBlanks = m_randomiser.Next(26, 32);
+					minimumNumbersPerRowColumn = 5;
+					break;
+				case Difficulty.Easy:
+					numberOfBlanks = m_randomiser.Next(32, 46);
+					minimumNumbersPerRowColumn = 4;
+					break;
+				case Difficulty.Medium:
+					numberOfBlanks = m_randomiser.Next(46, 50);
+					minimumNumbersPerRowColumn = 3;
+					break;
+				case Difficulty.Hard:
+					numberOfBlanks = m_randomiser.Next(50, 54);
+					minimumNumbersPerRowColumn = 2;
+					break;
+				case Difficulty.Extreme:
+					numberOfBlanks = m_randomiser.Next(54, 59);
+					minimumNumbersPerRowColumn = 0;
+					break;
+				default:
+					numberOfBlanks = m_randomiser.Next(26, 32);
+					minimumNumbersPerRowColumn = 5;
+					break;
+			}
+
+			int[,] workingGrid = CreateBlankGrid();
+
+			do
+			{
+				// Make a working copy of the grid.
+				Buffer.BlockCopy(grid, 0, workingGrid, 0, workingGrid.Length * sizeof(int));
+
+				List<Position> allPositions = new List<Position>();
+				for (int row = 0; row < 9; row++)
 				{
-					if (IsUnique())
+					for (int column = 0; column < 9; column++)
 					{
-						Buffer.BlockCopy(temporaryGrid, 0, m_finalGrid, 0, m_finalGrid.Length * sizeof(int));
+						allPositions.Add(new Position(row, column));
+					}
+				}
+
+				int blanksCount = 0;
+				while (blanksCount < numberOfBlanks)
+				{
+					int index = m_randomiser.Next(allPositions.Count);
+
+					if (index >= allPositions.Count)
+					{
 						break;
 					}
-					else
+					int row = allPositions[index].Row;
+					int column = allPositions[index].Column;
+
+					if (RowCount(row, workingGrid) > minimumNumbersPerRowColumn && ColumnCount(column, workingGrid) > minimumNumbersPerRowColumn)
 					{
-						m_doneIterating = false;
+						int gridValue = workingGrid[row, column];
+
+						workingGrid[row, column] = 0;
+
+						if (IsUnique(workingGrid))
+						{
+							blanksCount++;
+						}
+						else
+						{
+							workingGrid[row, column] = gridValue;
+						}
 					}
+					allPositions.RemoveAt(index);
+				}
+			} while (!IsUnique(workingGrid));
+
+			Buffer.BlockCopy(workingGrid, 0, grid, 0, grid.Length * sizeof(int));
+		}
+
+		private int RowCount(int row, int[,] grid)
+		{
+			int rowCount = 0;
+
+			for (int column = 0; column < 9; column++)
+			{
+				if (grid[row, column] > 0)
+				{
+					rowCount++;
 				}
 			}
 
-			return m_finalGrid;
+			return rowCount;
+		}
+
+		private int ColumnCount(int column, int[,] grid)
+		{
+			int columnCount = 0;
+
+			for (int row = 0; row < 9; row++)
+			{
+				if (grid[row, column] > 0)
+				{
+					columnCount++;
+				}
+			}
+
+			return columnCount;
 		}
 
 		private bool IterativelyFillGrid(int[,] solutionGrid)
@@ -190,12 +308,12 @@ namespace SiriusSudoku
 			return result;
 		}
 
-		private void FillGridSpot(int [,] solutionGrid, int row, int column, int value)
+		private void FillGridSpot(int [,] grid, int row, int column, int value)
 		{
-			solutionGrid[row, column] = value;
+			grid[row, column] = value;
 		}
 
-		private List<int> PossibleChoices(int[,] solutionGrid, int row, int column)
+		private List<int> PossibleChoices(int[,] grid, int row, int column)
 		{
 			int sqRow = ((int)row / 3) * 3;
 			int sqCol = ((int)column / 3) * 3;
@@ -205,14 +323,14 @@ namespace SiriusSudoku
 			for(int i = 0; i < m_gameSize; i++)
 			{
 				// Add all non-zero row values. 
-				if(solutionGrid[row,i] > 0)
+				if(grid[row,i] > 0)
 				{
-					existingValues.Add(solutionGrid[row,i]);
+					existingValues.Add(grid[row,i]);
 				}
 				// Add all non-zero column values. 
-				if(solutionGrid[i, column] > 0)
+				if(grid[i, column] > 0)
 				{
-					existingValues.Add(solutionGrid[i, column]);
+					existingValues.Add(grid[i, column]);
 				}
 			}
 
@@ -220,9 +338,9 @@ namespace SiriusSudoku
 			{
 				for (int j = 0; j < 3; j++)
 				{
-					if (solutionGrid[i + sqRow, j + sqCol] > 0)
+					if (grid[i + sqRow, j + sqCol] > 0)
 					{
-						existingValues.Add(solutionGrid[i + sqRow, j + sqCol]);
+						existingValues.Add(grid[i + sqRow, j + sqCol]);
 					}
 				}
 			}
@@ -280,13 +398,13 @@ namespace SiriusSudoku
 				{6,6,6,7,7,7,8,8,8}
 		};
 
-		public bool IsUnique()
+		public bool IsUnique(int[,] grid)
 		{
-			return TestUniqueness() == Ret.Unique;
+			return TestUniqueness(grid) == Ret.Unique;
 		}
 
 		// Is there one and only one solution?
-		private Ret TestUniqueness()
+		private Ret TestUniqueness(int[,] grid)
 		{
 			// Find untouched location with most information
 			int xp = 0;
@@ -294,12 +412,12 @@ namespace SiriusSudoku
 			byte[] Mp = null;
 			int cMp = 10;
 
-			for (int y = 0; y < 9; y++)
+			for (int row = 0; row < 9; row++)
 			{
-				for (int x = 0; x < 9; x++)
+				for (int column = 0; column < 9; column++)
 				{
 					// Is this spot unused?
-					if (m_finalGrid[y, x] == 0)
+					if (grid[row, column] == 0)
 					{
 						// Set M of possible solutions
 						byte[] M = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -307,21 +425,21 @@ namespace SiriusSudoku
 						// Remove used numbers in the vertical direction
 						for (int a = 0; a < 9; a++)
 						{
-							M[m_finalGrid[a, x]] = 0;
+							M[grid[a, column]] = 0;
 						}
 
 						// Remove used numbers in the horizontal direction
 						for (int b = 0; b < 9; b++)
 						{
-							M[m_finalGrid[y, b]] = 0;
+							M[grid[row, b]] = 0;
 						}
 
 						// Remove used numbers in the sub square.
-						int squareIndex = m_subSquare[y, x];
+						int squareIndex = m_subSquare[row, column];
 						for (int c = 0; c < 9; c++)
 						{
 							EntryPoint p = m_subIndex[squareIndex, c];
-							M[m_finalGrid[p.x, p.y]] = 0;
+							M[grid[p.x, p.y]] = 0;
 						}
 
 						int cM = 0;
@@ -336,8 +454,8 @@ namespace SiriusSudoku
 						{
 							cMp = cM;
 							Mp = M;
-							xp = x;
-							yp = y;
+							xp = column;
+							yp = row;
 						}
 					}
 				}
@@ -345,11 +463,15 @@ namespace SiriusSudoku
 
 			// Finished?
 			if (cMp == 10)
+			{
 				return Ret.Unique;
+			}
 
 			// Couldn't find a solution?
 			if (cMp == 0)
+			{
 				return Ret.NoSolution;
+			}
 
 			// Try elements
 			int success = 0;
@@ -357,29 +479,34 @@ namespace SiriusSudoku
 			{
 				if (Mp[i] != 0)
 				{
-					m_finalGrid[yp, xp] = Mp[i];
+					grid[yp, xp] = Mp[i];
 
-					switch (TestUniqueness())
+					switch (TestUniqueness(grid))
 					{
 						case Ret.Unique:
 							success++;
 							break;
 
 						case Ret.NotUnique:
+							grid[yp, xp] = 0;
 							return Ret.NotUnique;
 
 						case Ret.NoSolution:
+							grid[yp, xp] = 0;
 							break;
 					}
 
 					// More than one solution found?
 					if (success > 1)
+					{
+						grid[yp, xp] = 0;
 						return Ret.NotUnique;
+					}
 				}
 			}
 
 			// Restore to original state.
-			m_finalGrid[yp, xp] = 0;
+			grid[yp, xp] = 0;
 
 			switch (success)
 			{

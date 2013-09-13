@@ -32,8 +32,7 @@
 			// 
 			// SudokuGridSquare
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.MaximumSize = new System.Drawing.Size(60, 60);
 			this.MinimumSize = new System.Drawing.Size(60, 60);
 			this.Name = "SudokuGridSquare";

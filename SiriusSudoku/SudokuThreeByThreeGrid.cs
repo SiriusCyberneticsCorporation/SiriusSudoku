@@ -19,6 +19,7 @@ namespace SiriusSudoku
 		public delegate void CellClearedHandler(int number, Position gridPosition, Position cellPosition);
 		public event CellClearedHandler OnCellCleared;
 
+		[Browsable(false)]
 		public Position GridPosition { set { m_gridPosition = value; } }
 
 		private Position m_gridPosition = null;
@@ -90,19 +91,50 @@ namespace SiriusSudoku
 			}
 		}
 
+		[Browsable(false)]
+		public int NumberSelected 
+		{
+			set
+			{
+				for (int row = 0; row < 3; row++)
+				{
+					for (int column = 0; column < 3; column++)
+					{
+						m_gridSquares[row, column].NumberSelected = value;
+					}
+				}
+			} 
+		}
+
 		public void ShowErrors(Position cellPosition, bool showErrors)
 		{
 			if (cellPosition.Row < 0 || cellPosition.Row > 2)
 			{
-				throw new Exception("CellValue() - Row index out of range.");
+				throw new Exception("ShowErrors() - Row index out of range.");
 			}
 			else if (cellPosition.Column < 0 || cellPosition.Column > 2)
 			{
-				throw new Exception("CellValue() - Column index out of range.");
+				throw new Exception("ShowErrors() - Column index out of range.");
 			}
 			else
 			{
 				m_gridSquares[cellPosition.Row, cellPosition.Column].ShowErrors = showErrors;
+			}
+		}
+
+		public void HighlightPencilMarks(Position cellPosition, bool highlight)
+		{
+			if (cellPosition.Row < 0 || cellPosition.Row > 2)
+			{
+				throw new Exception("highlightPencilMarks() - Row index out of range.");
+			}
+			else if (cellPosition.Column < 0 || cellPosition.Column > 2)
+			{
+				throw new Exception("highlightPencilMarks() - Column index out of range.");
+			}
+			else
+			{
+				m_gridSquares[cellPosition.Row, cellPosition.Column].HighlightPencils = highlight;
 			}
 		}
 
