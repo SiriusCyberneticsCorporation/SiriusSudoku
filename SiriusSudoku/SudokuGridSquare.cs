@@ -134,6 +134,7 @@ namespace SiriusSudoku
 		private bool m_numberGiven = false;
 		private bool m_numberIsCorrect = true;
 		private bool m_numberProvidedByPlayer = false;
+		private float m_resizeRatio = 1.0f;
 		private List<int> m_numbersPencilled = new List<int>();
 		private Position m_cellPosition = null;
 
@@ -144,7 +145,7 @@ namespace SiriusSudoku
 
 		private Brush m_textBrush = new SolidBrush(Color.Black);
 		private Brush m_givenTextBrush = new SolidBrush(Color.Navy);
-		private Brush m_pencilTextBrush = new SolidBrush(Color.Black);
+		private Brush m_pencilTextBrush = new SolidBrush(Color.DarkGray);
 		private Brush m_highlightedPencilTextBrush = new SolidBrush(Color.Red);
 		private Brush m_borderBrush = new SolidBrush(Color.DarkGray);
 		private Brush m_incorrectNumberBrush = new SolidBrush(Color.Red);
@@ -173,11 +174,11 @@ namespace SiriusSudoku
 
 		private void DrawTheSquare(Graphics g)
 		{
-			int numberOfSpaces = 4;
-			int numberOfPencilled = 3;
-			float spaceSize = g.VisibleClipBounds.Width * 0.05f;
-			float pencilledSize = (g.VisibleClipBounds.Width - (spaceSize * numberOfSpaces)) / (float)numberOfPencilled;
-			RectangleF bigNumberBox = new RectangleF(0, 10, 60, 50);
+			float numberOfSpaces = 4;
+			float numberOfPencilled = 3;
+			float spaceSize = (float)g.VisibleClipBounds.Width * 0.05f * m_resizeRatio;
+			float pencilledSize = ((float)g.VisibleClipBounds.Width - (spaceSize * numberOfSpaces)) / numberOfPencilled;
+			RectangleF bigNumberBox = new RectangleF(0, 10 * m_resizeRatio, 60 * m_resizeRatio, 50 * m_resizeRatio);
 
 			if (pencilledSize > 0)
 			{
@@ -223,8 +224,8 @@ namespace SiriusSudoku
 				{
 					foreach (int pencilled in m_numbersPencilled)
 					{
-						float left = 2;
-						float top = 2;
+						float left = 1;
+						float top = 0;
 
 						switch (pencilled)
 						{
@@ -320,6 +321,20 @@ namespace SiriusSudoku
 			{
 				OnCellDoubleTapped(m_cellPosition, m_number);
 			}
+		}
+
+		private void SudokuGridSquare_Resize(object sender, EventArgs e)
+		{
+			float hRatio = (float)this.ClientSize.Height / 60f;
+			float wRatio = (float)this.ClientSize.Width / 60f;
+			
+			m_resizeRatio = (hRatio < wRatio) ? hRatio : wRatio;
+
+			m_smallFont = new Font(this.Font.FontFamily, 10 * m_resizeRatio, FontStyle.Bold);
+			m_bigFont = new Font(this.Font.FontFamily, 36 * m_resizeRatio);
+			m_bigFontBold = new Font(this.Font.FontFamily, 36 * m_resizeRatio, FontStyle.Bold);
+
+			Invalidate();
 		}
 	}
 }

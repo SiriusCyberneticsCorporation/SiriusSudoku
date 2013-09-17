@@ -6,13 +6,22 @@ using System.Threading.Tasks;
 
 namespace SiriusSudoku
 {
+	public enum GameHelper
+	{
+		ShowNumberCount = 10,
+		HighlightPencilMarks = 30,
+		ShowErrors = 50,
+	}
+
 	public enum Difficulty
 	{
+		Unknown,
+		Restarting,
 		UserSupplied,
-		TooEasy = 40,
-		Easy = 36,
-		Medium = 32,
-		Hard = 28,
-		Extreme = 20,
+		TooEasy,
+		Easy,
+		Medium,
+		Hard,
+		Extreme,
 	}
 }

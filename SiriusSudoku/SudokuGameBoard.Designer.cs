@@ -65,7 +65,7 @@
 			this.GameBoardTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 			this.GameBoardTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 			this.GameBoardTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.GameBoardTableLayoutPanel.Size = new System.Drawing.Size(569, 569);
+			this.GameBoardTableLayoutPanel.Size = new System.Drawing.Size(571, 546);
 			this.GameBoardTableLayoutPanel.TabIndex = 0;
 			// 
 			// Grid00
@@ -73,98 +73,80 @@
 			this.Grid00.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.Grid00.Location = new System.Drawing.Point(3, 3);
 			this.Grid00.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid00.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid00.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid00.Name = "Grid00";
-			this.Grid00.Size = new System.Drawing.Size(188, 188);
+			this.Grid00.Size = new System.Drawing.Size(187, 178);
 			this.Grid00.TabIndex = 0;
 			// 
 			// Grid01
 			// 
 			this.Grid01.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid01.Location = new System.Drawing.Point(191, 3);
+			this.Grid01.Location = new System.Drawing.Point(192, 3);
 			this.Grid01.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid01.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid01.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid01.Name = "Grid01";
-			this.Grid01.Size = new System.Drawing.Size(188, 188);
+			this.Grid01.Size = new System.Drawing.Size(187, 178);
 			this.Grid01.TabIndex = 1;
 			// 
 			// Grid02
 			// 
 			this.Grid02.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid02.Location = new System.Drawing.Point(379, 3);
+			this.Grid02.Location = new System.Drawing.Point(381, 3);
 			this.Grid02.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid02.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid02.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid02.Name = "Grid02";
-			this.Grid02.Size = new System.Drawing.Size(188, 188);
+			this.Grid02.Size = new System.Drawing.Size(187, 178);
 			this.Grid02.TabIndex = 2;
 			// 
 			// Grid10
 			// 
 			this.Grid10.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid10.Location = new System.Drawing.Point(3, 191);
+			this.Grid10.Location = new System.Drawing.Point(3, 183);
 			this.Grid10.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid10.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid10.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid10.Name = "Grid10";
-			this.Grid10.Size = new System.Drawing.Size(188, 188);
+			this.Grid10.Size = new System.Drawing.Size(187, 178);
 			this.Grid10.TabIndex = 3;
 			// 
 			// Grid11
 			// 
 			this.Grid11.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid11.Location = new System.Drawing.Point(191, 191);
+			this.Grid11.Location = new System.Drawing.Point(192, 183);
 			this.Grid11.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid11.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid11.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid11.Name = "Grid11";
-			this.Grid11.Size = new System.Drawing.Size(188, 188);
+			this.Grid11.Size = new System.Drawing.Size(187, 178);
 			this.Grid11.TabIndex = 4;
 			// 
 			// Grid12
 			// 
 			this.Grid12.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid12.Location = new System.Drawing.Point(379, 191);
+			this.Grid12.Location = new System.Drawing.Point(381, 183);
 			this.Grid12.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid12.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid12.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid12.Name = "Grid12";
-			this.Grid12.Size = new System.Drawing.Size(188, 188);
+			this.Grid12.Size = new System.Drawing.Size(187, 178);
 			this.Grid12.TabIndex = 5;
 			// 
 			// Grid20
 			// 
 			this.Grid20.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid20.Location = new System.Drawing.Point(3, 379);
+			this.Grid20.Location = new System.Drawing.Point(3, 363);
 			this.Grid20.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid20.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid20.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid20.Name = "Grid20";
-			this.Grid20.Size = new System.Drawing.Size(188, 188);
+			this.Grid20.Size = new System.Drawing.Size(187, 180);
 			this.Grid20.TabIndex = 6;
 			// 
 			// Grid21
 			// 
 			this.Grid21.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid21.Location = new System.Drawing.Point(191, 379);
+			this.Grid21.Location = new System.Drawing.Point(192, 363);
 			this.Grid21.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid21.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid21.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid21.Name = "Grid21";
-			this.Grid21.Size = new System.Drawing.Size(188, 188);
+			this.Grid21.Size = new System.Drawing.Size(187, 180);
 			this.Grid21.TabIndex = 7;
 			// 
 			// Grid22
 			// 
 			this.Grid22.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.Grid22.Location = new System.Drawing.Point(379, 379);
+			this.Grid22.Location = new System.Drawing.Point(381, 363);
 			this.Grid22.Margin = new System.Windows.Forms.Padding(1);
-			this.Grid22.MaximumSize = new System.Drawing.Size(188, 188);
-			this.Grid22.MinimumSize = new System.Drawing.Size(188, 188);
 			this.Grid22.Name = "Grid22";
-			this.Grid22.Size = new System.Drawing.Size(188, 188);
+			this.Grid22.Size = new System.Drawing.Size(187, 180);
 			this.Grid22.TabIndex = 8;
 			// 
 			// SudokuGameBoard
@@ -172,10 +154,10 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.GameBoardTableLayoutPanel);
-			this.MaximumSize = new System.Drawing.Size(569, 569);
-			this.MinimumSize = new System.Drawing.Size(569, 569);
+			this.DoubleBuffered = true;
+			this.Margin = new System.Windows.Forms.Padding(0);
 			this.Name = "SudokuGameBoard";
-			this.Size = new System.Drawing.Size(569, 569);
+			this.Size = new System.Drawing.Size(571, 546);
 			this.Load += new System.EventHandler(this.SudokuGameBoard_Load);
 			this.GameBoardTableLayoutPanel.ResumeLayout(false);
 			this.ResumeLayout(false);

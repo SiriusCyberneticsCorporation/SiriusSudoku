@@ -22,5 +22,29 @@ namespace SiriusSudoku.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WindowGeometry {
+            get {
+                return ((string)(this["WindowGeometry"]));
+            }
+            set {
+                this["WindowGeometry"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string InitialLocation {
+            get {
+                return ((string)(this["InitialLocation"]));
+            }
+            set {
+                this["InitialLocation"] = value;
+            }
+        }
     }
 }

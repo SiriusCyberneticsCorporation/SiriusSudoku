@@ -356,7 +356,7 @@ namespace SiriusSudoku
 			return choices;
 		}
 
-		private enum Ret { Unique, NotUnique, NoSolution };
+		private enum GridUniqueness { Unique, NotUnique, NoSolution };
 
 		internal struct EntryPoint
 		{
@@ -400,11 +400,11 @@ namespace SiriusSudoku
 
 		public bool IsUnique(int[,] grid)
 		{
-			return TestUniqueness(grid) == Ret.Unique;
+			return TestUniqueness(grid) == GridUniqueness.Unique;
 		}
 
 		// Is there one and only one solution?
-		private Ret TestUniqueness(int[,] grid)
+		private GridUniqueness TestUniqueness(int[,] grid)
 		{
 			// Find untouched location with most information
 			int xp = 0;
@@ -464,13 +464,13 @@ namespace SiriusSudoku
 			// Finished?
 			if (cMp == 10)
 			{
-				return Ret.Unique;
+				return GridUniqueness.Unique;
 			}
 
 			// Couldn't find a solution?
 			if (cMp == 0)
 			{
-				return Ret.NoSolution;
+				return GridUniqueness.NoSolution;
 			}
 
 			// Try elements
@@ -483,15 +483,15 @@ namespace SiriusSudoku
 
 					switch (TestUniqueness(grid))
 					{
-						case Ret.Unique:
+						case GridUniqueness.Unique:
 							success++;
 							break;
 
-						case Ret.NotUnique:
+						case GridUniqueness.NotUnique:
 							grid[yp, xp] = 0;
-							return Ret.NotUnique;
+							return GridUniqueness.NotUnique;
 
-						case Ret.NoSolution:
+						case GridUniqueness.NoSolution:
 							grid[yp, xp] = 0;
 							break;
 					}
@@ -500,7 +500,7 @@ namespace SiriusSudoku
 					if (success > 1)
 					{
 						grid[yp, xp] = 0;
-						return Ret.NotUnique;
+						return GridUniqueness.NotUnique;
 					}
 				}
 			}
@@ -511,14 +511,14 @@ namespace SiriusSudoku
 			switch (success)
 			{
 				case 0:
-					return Ret.NoSolution;
+					return GridUniqueness.NoSolution;
 
 				case 1:
-					return Ret.Unique;
+					return GridUniqueness.Unique;
 
 				default:
 					// Won't happen.
-					return Ret.NotUnique;
+					return GridUniqueness.NotUnique;
 			}
 		}
 	}

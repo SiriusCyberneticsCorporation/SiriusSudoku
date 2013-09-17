@@ -33,13 +33,13 @@
 			// SudokuGridSquare
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-			this.MaximumSize = new System.Drawing.Size(60, 60);
-			this.MinimumSize = new System.Drawing.Size(60, 60);
+			this.DoubleBuffered = true;
 			this.Name = "SudokuGridSquare";
 			this.Size = new System.Drawing.Size(60, 60);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.SudokuGridSquare_Paint);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SudokuGridSquare_MouseClick);
 			this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.SudokuGridSquare_MouseDoubleClick);
+			this.Resize += new System.EventHandler(this.SudokuGridSquare_Resize);
 			this.ResumeLayout(false);
 
 		}
