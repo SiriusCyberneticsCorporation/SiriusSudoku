@@ -31,27 +31,28 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SiriusSudokuForm));
 			this.SudokuToolStrip = new System.Windows.Forms.ToolStrip();
+			this.EasyToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.MediumToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.HardToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.ExtremeToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.TimerToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+			this.PauseToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.EnterPuzzleToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.enterPuzzleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.beginSolvingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.savePuzzleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.HallOfFameToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.ShowErrorsCheckBox = new System.Windows.Forms.CheckBox();
 			this.SecondTimer = new System.Windows.Forms.Timer(this.components);
 			this.ShowNumberCountCheckBox = new System.Windows.Forms.CheckBox();
 			this.HighlightPencilMarksCheckBox = new System.Windows.Forms.CheckBox();
 			this.RestartGameButton = new System.Windows.Forms.Button();
 			this.GameBoardPanel = new System.Windows.Forms.Panel();
-			this.EasyToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.MediumToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.HardToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.ExtremeToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.PauseToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.EnterPuzzleToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.enterPuzzleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.beginSolvingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.savePuzzleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.HallOfFameToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.TheGameBoard = new SiriusSudoku.SudokuGameBoard();
 			this.NumberSelectionPanel = new SiriusSudoku.NumberSelectionUserControl();
+			this.SillyHardToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.SudokuToolStrip.SuspendLayout();
 			this.GameBoardPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -64,6 +65,7 @@
             this.MediumToolStripButton,
             this.HardToolStripButton,
             this.ExtremeToolStripButton,
+            this.SillyHardToolStripButton,
             this.TimerToolStripTextBox,
             this.PauseToolStripButton,
             this.toolStripSeparator1,
@@ -72,9 +74,53 @@
             this.HallOfFameToolStripButton});
 			this.SudokuToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.SudokuToolStrip.Name = "SudokuToolStrip";
-			this.SudokuToolStrip.Size = new System.Drawing.Size(669, 35);
+			this.SudokuToolStrip.Size = new System.Drawing.Size(832, 35);
 			this.SudokuToolStrip.TabIndex = 3;
 			this.SudokuToolStrip.Text = "toolStrip1";
+			// 
+			// EasyToolStripButton
+			// 
+			this.EasyToolStripButton.AutoSize = false;
+			this.EasyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.EasyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("EasyToolStripButton.Image")));
+			this.EasyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.EasyToolStripButton.Name = "EasyToolStripButton";
+			this.EasyToolStripButton.Size = new System.Drawing.Size(90, 30);
+			this.EasyToolStripButton.Text = "Easy";
+			this.EasyToolStripButton.Click += new System.EventHandler(this.EasyToolStripButton_Click);
+			// 
+			// MediumToolStripButton
+			// 
+			this.MediumToolStripButton.AutoSize = false;
+			this.MediumToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.MediumToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("MediumToolStripButton.Image")));
+			this.MediumToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.MediumToolStripButton.Name = "MediumToolStripButton";
+			this.MediumToolStripButton.Size = new System.Drawing.Size(90, 30);
+			this.MediumToolStripButton.Text = "Medium";
+			this.MediumToolStripButton.Click += new System.EventHandler(this.MediumToolStripButton_Click);
+			// 
+			// HardToolStripButton
+			// 
+			this.HardToolStripButton.AutoSize = false;
+			this.HardToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.HardToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("HardToolStripButton.Image")));
+			this.HardToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.HardToolStripButton.Name = "HardToolStripButton";
+			this.HardToolStripButton.Size = new System.Drawing.Size(90, 30);
+			this.HardToolStripButton.Text = "Hard";
+			this.HardToolStripButton.Click += new System.EventHandler(this.HardToolStripButton_Click);
+			// 
+			// ExtremeToolStripButton
+			// 
+			this.ExtremeToolStripButton.AutoSize = false;
+			this.ExtremeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.ExtremeToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("ExtremeToolStripButton.Image")));
+			this.ExtremeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.ExtremeToolStripButton.Name = "ExtremeToolStripButton";
+			this.ExtremeToolStripButton.Size = new System.Drawing.Size(90, 30);
+			this.ExtremeToolStripButton.Text = "Extreme";
+			this.ExtremeToolStripButton.Click += new System.EventHandler(this.ExtremeToolStripButton_Click);
 			// 
 			// TimerToolStripTextBox
 			// 
@@ -86,128 +132,6 @@
 			this.TimerToolStripTextBox.Text = "00:00";
 			this.TimerToolStripTextBox.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 35);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 35);
-			// 
-			// ShowErrorsCheckBox
-			// 
-			this.ShowErrorsCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.ShowErrorsCheckBox.AutoSize = true;
-			this.ShowErrorsCheckBox.Location = new System.Drawing.Point(524, 450);
-			this.ShowErrorsCheckBox.Name = "ShowErrorsCheckBox";
-			this.ShowErrorsCheckBox.Size = new System.Drawing.Size(83, 17);
-			this.ShowErrorsCheckBox.TabIndex = 4;
-			this.ShowErrorsCheckBox.Text = "Show Errors";
-			this.ShowErrorsCheckBox.UseVisualStyleBackColor = true;
-			this.ShowErrorsCheckBox.CheckedChanged += new System.EventHandler(this.ShowErrorsCheckBox_CheckedChanged);
-			// 
-			// SecondTimer
-			// 
-			this.SecondTimer.Enabled = true;
-			this.SecondTimer.Interval = 1000;
-			this.SecondTimer.Tick += new System.EventHandler(this.SecondTimer_Tick);
-			// 
-			// ShowNumberCountCheckBox
-			// 
-			this.ShowNumberCountCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.ShowNumberCountCheckBox.AutoSize = true;
-			this.ShowNumberCountCheckBox.Checked = true;
-			this.ShowNumberCountCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.ShowNumberCountCheckBox.Location = new System.Drawing.Point(524, 473);
-			this.ShowNumberCountCheckBox.Name = "ShowNumberCountCheckBox";
-			this.ShowNumberCountCheckBox.Size = new System.Drawing.Size(124, 17);
-			this.ShowNumberCountCheckBox.TabIndex = 5;
-			this.ShowNumberCountCheckBox.Text = "Show Number Count";
-			this.ShowNumberCountCheckBox.UseVisualStyleBackColor = true;
-			this.ShowNumberCountCheckBox.CheckedChanged += new System.EventHandler(this.ShowNumberCountCheckBox_CheckedChanged);
-			// 
-			// HighlightPencilMarksCheckBox
-			// 
-			this.HighlightPencilMarksCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.HighlightPencilMarksCheckBox.AutoSize = true;
-			this.HighlightPencilMarksCheckBox.Location = new System.Drawing.Point(524, 496);
-			this.HighlightPencilMarksCheckBox.Name = "HighlightPencilMarksCheckBox";
-			this.HighlightPencilMarksCheckBox.Size = new System.Drawing.Size(131, 17);
-			this.HighlightPencilMarksCheckBox.TabIndex = 6;
-			this.HighlightPencilMarksCheckBox.Text = "Highlight Pencil Marks";
-			this.HighlightPencilMarksCheckBox.UseVisualStyleBackColor = true;
-			this.HighlightPencilMarksCheckBox.CheckedChanged += new System.EventHandler(this.HighlightPencilMarksCheckBox_CheckedChanged);
-			// 
-			// RestartGameButton
-			// 
-			this.RestartGameButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.RestartGameButton.Location = new System.Drawing.Point(524, 518);
-			this.RestartGameButton.Name = "RestartGameButton";
-			this.RestartGameButton.Size = new System.Drawing.Size(133, 31);
-			this.RestartGameButton.TabIndex = 7;
-			this.RestartGameButton.Text = "Restart Current Game";
-			this.RestartGameButton.UseVisualStyleBackColor = true;
-			this.RestartGameButton.Click += new System.EventHandler(this.RestartGameButton_Click);
-			// 
-			// GameBoardPanel
-			// 
-			this.GameBoardPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.GameBoardPanel.Controls.Add(this.TheGameBoard);
-			this.GameBoardPanel.Location = new System.Drawing.Point(12, 42);
-			this.GameBoardPanel.Margin = new System.Windows.Forms.Padding(0);
-			this.GameBoardPanel.Name = "GameBoardPanel";
-			this.GameBoardPanel.Size = new System.Drawing.Size(506, 506);
-			this.GameBoardPanel.TabIndex = 8;
-			this.GameBoardPanel.Resize += new System.EventHandler(this.GameBoardPanel_Resize);
-			// 
-			// EasyToolStripButton
-			// 
-			this.EasyToolStripButton.AutoSize = false;
-			this.EasyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.EasyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("EasyToolStripButton.Image")));
-			this.EasyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.EasyToolStripButton.Name = "EasyToolStripButton";
-			this.EasyToolStripButton.Size = new System.Drawing.Size(90, 30);
-			this.EasyToolStripButton.Text = "New Easy";
-			this.EasyToolStripButton.Click += new System.EventHandler(this.EasyToolStripButton_Click);
-			// 
-			// MediumToolStripButton
-			// 
-			this.MediumToolStripButton.AutoSize = false;
-			this.MediumToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.MediumToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("MediumToolStripButton.Image")));
-			this.MediumToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.MediumToolStripButton.Name = "MediumToolStripButton";
-			this.MediumToolStripButton.Size = new System.Drawing.Size(90, 30);
-			this.MediumToolStripButton.Text = "New Medium";
-			this.MediumToolStripButton.Click += new System.EventHandler(this.MediumToolStripButton_Click);
-			// 
-			// HardToolStripButton
-			// 
-			this.HardToolStripButton.AutoSize = false;
-			this.HardToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.HardToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("HardToolStripButton.Image")));
-			this.HardToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.HardToolStripButton.Name = "HardToolStripButton";
-			this.HardToolStripButton.Size = new System.Drawing.Size(90, 30);
-			this.HardToolStripButton.Text = "New Hard";
-			this.HardToolStripButton.Click += new System.EventHandler(this.HardToolStripButton_Click);
-			// 
-			// ExtremeToolStripButton
-			// 
-			this.ExtremeToolStripButton.AutoSize = false;
-			this.ExtremeToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.ExtremeToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("ExtremeToolStripButton.Image")));
-			this.ExtremeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.ExtremeToolStripButton.Name = "ExtremeToolStripButton";
-			this.ExtremeToolStripButton.Size = new System.Drawing.Size(90, 30);
-			this.ExtremeToolStripButton.Text = "New Extreme";
-			this.ExtremeToolStripButton.Click += new System.EventHandler(this.ExtremeToolStripButton_Click);
-			// 
 			// PauseToolStripButton
 			// 
 			this.PauseToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -218,6 +142,11 @@
 			this.PauseToolStripButton.Size = new System.Drawing.Size(42, 32);
 			this.PauseToolStripButton.Text = "Pause";
 			this.PauseToolStripButton.Click += new System.EventHandler(this.PauseToolStripButton_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 35);
 			// 
 			// EnterPuzzleToolStripDropDownButton
 			// 
@@ -253,6 +182,11 @@
 			this.savePuzzleToolStripMenuItem.Text = "Save Puzzle";
 			this.savePuzzleToolStripMenuItem.Click += new System.EventHandler(this.savePuzzleToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 35);
+			// 
 			// HallOfFameToolStripButton
 			// 
 			this.HallOfFameToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -262,6 +196,74 @@
 			this.HallOfFameToolStripButton.Size = new System.Drawing.Size(78, 32);
 			this.HallOfFameToolStripButton.Text = "Hall of Fame";
 			this.HallOfFameToolStripButton.Click += new System.EventHandler(this.HallOfFameToolStripButton_Click);
+			// 
+			// ShowErrorsCheckBox
+			// 
+			this.ShowErrorsCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ShowErrorsCheckBox.AutoSize = true;
+			this.ShowErrorsCheckBox.Location = new System.Drawing.Point(687, 450);
+			this.ShowErrorsCheckBox.Name = "ShowErrorsCheckBox";
+			this.ShowErrorsCheckBox.Size = new System.Drawing.Size(83, 17);
+			this.ShowErrorsCheckBox.TabIndex = 4;
+			this.ShowErrorsCheckBox.Text = "Show Errors";
+			this.ShowErrorsCheckBox.UseVisualStyleBackColor = true;
+			this.ShowErrorsCheckBox.CheckedChanged += new System.EventHandler(this.ShowErrorsCheckBox_CheckedChanged);
+			// 
+			// SecondTimer
+			// 
+			this.SecondTimer.Enabled = true;
+			this.SecondTimer.Interval = 1000;
+			this.SecondTimer.Tick += new System.EventHandler(this.SecondTimer_Tick);
+			// 
+			// ShowNumberCountCheckBox
+			// 
+			this.ShowNumberCountCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ShowNumberCountCheckBox.AutoSize = true;
+			this.ShowNumberCountCheckBox.Checked = true;
+			this.ShowNumberCountCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.ShowNumberCountCheckBox.Location = new System.Drawing.Point(687, 473);
+			this.ShowNumberCountCheckBox.Name = "ShowNumberCountCheckBox";
+			this.ShowNumberCountCheckBox.Size = new System.Drawing.Size(124, 17);
+			this.ShowNumberCountCheckBox.TabIndex = 5;
+			this.ShowNumberCountCheckBox.Text = "Show Number Count";
+			this.ShowNumberCountCheckBox.UseVisualStyleBackColor = true;
+			this.ShowNumberCountCheckBox.CheckedChanged += new System.EventHandler(this.ShowNumberCountCheckBox_CheckedChanged);
+			// 
+			// HighlightPencilMarksCheckBox
+			// 
+			this.HighlightPencilMarksCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.HighlightPencilMarksCheckBox.AutoSize = true;
+			this.HighlightPencilMarksCheckBox.Location = new System.Drawing.Point(687, 496);
+			this.HighlightPencilMarksCheckBox.Name = "HighlightPencilMarksCheckBox";
+			this.HighlightPencilMarksCheckBox.Size = new System.Drawing.Size(131, 17);
+			this.HighlightPencilMarksCheckBox.TabIndex = 6;
+			this.HighlightPencilMarksCheckBox.Text = "Highlight Pencil Marks";
+			this.HighlightPencilMarksCheckBox.UseVisualStyleBackColor = true;
+			this.HighlightPencilMarksCheckBox.CheckedChanged += new System.EventHandler(this.HighlightPencilMarksCheckBox_CheckedChanged);
+			// 
+			// RestartGameButton
+			// 
+			this.RestartGameButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.RestartGameButton.Location = new System.Drawing.Point(687, 580);
+			this.RestartGameButton.Name = "RestartGameButton";
+			this.RestartGameButton.Size = new System.Drawing.Size(133, 31);
+			this.RestartGameButton.TabIndex = 7;
+			this.RestartGameButton.Text = "Restart Current Game";
+			this.RestartGameButton.UseVisualStyleBackColor = true;
+			this.RestartGameButton.Click += new System.EventHandler(this.RestartGameButton_Click);
+			// 
+			// GameBoardPanel
+			// 
+			this.GameBoardPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.GameBoardPanel.Controls.Add(this.TheGameBoard);
+			this.GameBoardPanel.Location = new System.Drawing.Point(12, 42);
+			this.GameBoardPanel.Margin = new System.Windows.Forms.Padding(0);
+			this.GameBoardPanel.Name = "GameBoardPanel";
+			this.GameBoardPanel.Size = new System.Drawing.Size(669, 568);
+			this.GameBoardPanel.TabIndex = 8;
+			this.GameBoardPanel.Resize += new System.EventHandler(this.GameBoardPanel_Resize);
 			// 
 			// TheGameBoard
 			// 
@@ -275,23 +277,34 @@
 			this.TheGameBoard.Name = "TheGameBoard";
 			this.TheGameBoard.NumberSelected = -1;
 			this.TheGameBoard.ShowErrors = false;
-			this.TheGameBoard.Size = new System.Drawing.Size(500, 500);
+			this.TheGameBoard.Size = new System.Drawing.Size(663, 562);
 			this.TheGameBoard.SolutionGrid = null;
 			this.TheGameBoard.TabIndex = 0;
 			// 
 			// NumberSelectionPanel
 			// 
 			this.NumberSelectionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.NumberSelectionPanel.Location = new System.Drawing.Point(524, 42);
+			this.NumberSelectionPanel.Location = new System.Drawing.Point(687, 42);
 			this.NumberSelectionPanel.Name = "NumberSelectionPanel";
 			this.NumberSelectionPanel.Size = new System.Drawing.Size(133, 399);
 			this.NumberSelectionPanel.TabIndex = 1;
+			// 
+			// SillyHardToolStripButton
+			// 
+			this.SillyHardToolStripButton.AutoSize = false;
+			this.SillyHardToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.SillyHardToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("SillyHardToolStripButton.Image")));
+			this.SillyHardToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.SillyHardToolStripButton.Name = "SillyHardToolStripButton";
+			this.SillyHardToolStripButton.Size = new System.Drawing.Size(90, 30);
+			this.SillyHardToolStripButton.Text = "Silly Hard";
+			this.SillyHardToolStripButton.Click += new System.EventHandler(this.SillyHardToolStripButton_Click);
 			// 
 			// SiriusSudokuForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(669, 559);
+			this.ClientSize = new System.Drawing.Size(832, 621);
 			this.Controls.Add(this.GameBoardPanel);
 			this.Controls.Add(this.RestartGameButton);
 			this.Controls.Add(this.HighlightPencilMarksCheckBox);
@@ -340,6 +353,7 @@
 		private System.Windows.Forms.CheckBox HighlightPencilMarksCheckBox;
 		private System.Windows.Forms.Button RestartGameButton;
 		private System.Windows.Forms.Panel GameBoardPanel;
+		private System.Windows.Forms.ToolStripButton SillyHardToolStripButton;
 
 	}
 }

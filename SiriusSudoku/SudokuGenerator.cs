@@ -114,35 +114,38 @@ namespace SiriusSudoku
 			switch (gameDifficulty)
 			{
 				case Difficulty.TooEasy:
-					numberOfBlanks = m_randomiser.Next(26, 32);
+					numberOfBlanks = m_randomiser.Next(30, 35);
 					minimumNumbersPerRowColumn = 5;
 					break;
 				case Difficulty.Easy:
-					numberOfBlanks = m_randomiser.Next(32, 46);
+					numberOfBlanks = m_randomiser.Next(35, 45);
 					minimumNumbersPerRowColumn = 4;
 					break;
 				case Difficulty.Medium:
-					numberOfBlanks = m_randomiser.Next(46, 50);
+					numberOfBlanks = m_randomiser.Next(45, 55);
 					minimumNumbersPerRowColumn = 3;
 					break;
 				case Difficulty.Hard:
-					numberOfBlanks = m_randomiser.Next(50, 54);
+					numberOfBlanks = m_randomiser.Next(50, 55);
 					minimumNumbersPerRowColumn = 2;
 					break;
 				case Difficulty.Extreme:
-					numberOfBlanks = m_randomiser.Next(54, 59);
+					numberOfBlanks = m_randomiser.Next(55, 60);
+					minimumNumbersPerRowColumn = 0;
+					break;
+				case Difficulty.SillyHard:
+					numberOfBlanks = m_randomiser.Next(60, 66);
 					minimumNumbersPerRowColumn = 0;
 					break;
 				default:
-					numberOfBlanks = m_randomiser.Next(26, 32);
+					numberOfBlanks = m_randomiser.Next(30, 35);
 					minimumNumbersPerRowColumn = 5;
 					break;
 			}
 
 			int[,] workingGrid = CreateBlankGrid();
 
-			do
-			{
+			//do {
 				// Make a working copy of the grid.
 				Buffer.BlockCopy(grid, 0, workingGrid, 0, workingGrid.Length * sizeof(int));
 
@@ -155,36 +158,64 @@ namespace SiriusSudoku
 					}
 				}
 
+				if (gameDifficulty == Difficulty.SillyHard)
+				{
+					int gridNumber = m_randomiser.Next(9);
+					int rowStart = 3 * (gridNumber / 3);
+					int columnStart = 3 * (gridNumber % 3);
+
+					for (int row = rowStart; row < rowStart+3; row++)
+					{
+						for (int column = columnStart; column < columnStart+3; column++)
+						{
+							workingGrid[row, column] = 0;
+						}
+					}
+				}
+
 				int blanksCount = 0;
 				while (blanksCount < numberOfBlanks)
 				{
 					int index = m_randomiser.Next(allPositions.Count);
 
-					if (index >= allPositions.Count)
+					if (allPositions.Count < 2)
 					{
 						break;
+					}
+					else if (index >= allPositions.Count)
+					{
+						continue;
 					}
 					int row = allPositions[index].Row;
 					int column = allPositions[index].Column;
 
-					if (RowCount(row, workingGrid) > minimumNumbersPerRowColumn && ColumnCount(column, workingGrid) > minimumNumbersPerRowColumn)
+//					if (RowCount(row, workingGrid) > minimumNumbersPerRowColumn && ColumnCount(column, workingGrid) > minimumNumbersPerRowColumn)
+					if (RowCount(row, workingGrid) > minimumNumbersPerRowColumn || ColumnCount(column, workingGrid) > minimumNumbersPerRowColumn)
 					{
 						int gridValue = workingGrid[row, column];
 
-						workingGrid[row, column] = 0;
-
-						if (IsUnique(workingGrid))
+						if (gridValue == 0)
 						{
 							blanksCount++;
 						}
 						else
 						{
-							workingGrid[row, column] = gridValue;
+							workingGrid[row, column] = 0;
+
+							if (IsUnique(workingGrid) || (gameDifficulty == Difficulty.SillyHard && blanksCount >= 55))
+							{
+								blanksCount++;
+							}
+							else
+							{
+								workingGrid[row, column] = gridValue;
+							}
 						}
 					}
 					allPositions.RemoveAt(index);
 				}
-			} while (!IsUnique(workingGrid));
+				int x = blanksCount;
+			//} while (!IsUnique(workingGrid));
 
 			Buffer.BlockCopy(workingGrid, 0, grid, 0, grid.Length * sizeof(int));
 		}

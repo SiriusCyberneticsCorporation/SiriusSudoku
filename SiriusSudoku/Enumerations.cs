@@ -23,5 +23,6 @@ namespace SiriusSudoku
 		Medium,
 		Hard,
 		Extreme,
+		SillyHard,
 	}
 }

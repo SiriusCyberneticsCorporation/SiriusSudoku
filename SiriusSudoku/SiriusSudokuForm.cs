@@ -255,6 +255,7 @@ namespace SiriusSudoku
 		{
 			switch(gameDifficulty)
 			{
+				case Difficulty.SillyHard:
 				case Difficulty.Extreme:
 				case Difficulty.Hard:
 					ShowErrorsCheckBox.Checked = false;
@@ -309,6 +310,11 @@ namespace SiriusSudoku
 		private void ExtremeToolStripButton_Click(object sender, EventArgs e)
 		{
 			StartNewGame(Difficulty.Extreme);
+		}
+
+		private void SillyHardToolStripButton_Click(object sender, EventArgs e)
+		{
+			StartNewGame(Difficulty.SillyHard);
 		}
 
 		private void ShowErrorsCheckBox_CheckedChanged(object sender, EventArgs e)
