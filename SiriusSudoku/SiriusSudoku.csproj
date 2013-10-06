@@ -71,6 +71,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerations.cs" />
+    <Compile Include="HighScoreEntry.cs" />
+    <Compile Include="HighScoresForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HighScoresForm.Designer.cs">
+      <DependentUpon>HighScoresForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewPlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewPlayerForm.Designer.cs">
+      <DependentUpon>NewPlayerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="NumberSelectionButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,6 +126,12 @@
     <Compile Include="SudokuThreeByThreeGrid.Designer.cs">
       <DependentUpon>SudokuThreeByThreeGrid.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="HighScoresForm.resx">
+      <DependentUpon>HighScoresForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewPlayerForm.resx">
+      <DependentUpon>NewPlayerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NumberSelectionButton.resx">
       <DependentUpon>NumberSelectionButton.cs</DependentUpon>
     </EmbeddedResource>

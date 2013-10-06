@@ -114,31 +114,31 @@ namespace SiriusSudoku
 			switch (gameDifficulty)
 			{
 				case Difficulty.TooEasy:
-					numberOfBlanks = m_randomiser.Next(30, 35);
-					minimumNumbersPerRowColumn = 5;
-					break;
-				case Difficulty.Easy:
-					numberOfBlanks = m_randomiser.Next(35, 45);
+					numberOfBlanks = m_randomiser.Next(32, 37);
 					minimumNumbersPerRowColumn = 4;
 					break;
-				case Difficulty.Medium:
-					numberOfBlanks = m_randomiser.Next(45, 55);
+				case Difficulty.Easy:
+					numberOfBlanks = m_randomiser.Next(37, 42);
 					minimumNumbersPerRowColumn = 3;
 					break;
-				case Difficulty.Hard:
-					numberOfBlanks = m_randomiser.Next(50, 55);
+				case Difficulty.Medium:
+					numberOfBlanks = m_randomiser.Next(42, 47);
 					minimumNumbersPerRowColumn = 2;
 					break;
+				case Difficulty.Hard:
+					numberOfBlanks = m_randomiser.Next(47, 52);
+					minimumNumbersPerRowColumn = 1;
+					break;
 				case Difficulty.Extreme:
-					numberOfBlanks = m_randomiser.Next(55, 60);
+					numberOfBlanks = m_randomiser.Next(52, 57);
 					minimumNumbersPerRowColumn = 0;
 					break;
 				case Difficulty.SillyHard:
-					numberOfBlanks = m_randomiser.Next(60, 66);
+					numberOfBlanks = m_randomiser.Next(57, 62);
 					minimumNumbersPerRowColumn = 0;
 					break;
 				default:
-					numberOfBlanks = m_randomiser.Next(30, 35);
+					numberOfBlanks = m_randomiser.Next(32, 37);
 					minimumNumbersPerRowColumn = 5;
 					break;
 			}
@@ -202,7 +202,7 @@ namespace SiriusSudoku
 						{
 							workingGrid[row, column] = 0;
 
-							if (IsUnique(workingGrid) || (gameDifficulty == Difficulty.SillyHard && blanksCount >= 55))
+							if (IsUnique(workingGrid) || (gameDifficulty == Difficulty.SillyHard && blanksCount >= 57))
 							{
 								blanksCount++;
 							}

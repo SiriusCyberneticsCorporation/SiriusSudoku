@@ -11,24 +11,28 @@ using System.Windows.Forms;
 using System.Windows;
 
 using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+//using System.Xml;
+//using System.Xml.Serialization;
 
 namespace SiriusSudoku
 {
 	public partial class SiriusSudokuForm : Form
 	{
-		private const string PLAYERS_FILE = "Players.xml";
-		private const string SETTINGS_FILE = "SiriusSudoku.txt";
+		private const string PLAYERS_FILE = "Players.bin";
+		private const string HIGH_SCORES_FILE = "SiriusSudoku.bin";
 
 		private bool m_gameActive = false;
 		private bool m_gamePaused = false;
 		private bool m_firstMoveMade = false;
 		private bool m_enteringPuzzle = false;
 		private int m_gameDurationSeconds = 0;
-		SudokuGenerator m_generator = null;
-		List<Player> m_players = new List<Player>();
-		List<GameHelper> m_gameHelpers = new List<GameHelper>();
+		private Player m_gamePlayer = null;
+		private Difficulty m_gameDifficulty = Difficulty.Unknown;
+		private SudokuGenerator m_generator = null;
+		private List<Player> m_players = new List<Player>();
+		private List<GameHelper> m_gameHelpers = new List<GameHelper>();
+		private Dictionary<Difficulty, List<HighScoreEntry>> m_highScores = new Dictionary<Difficulty, List<HighScoreEntry>>();
 
 		public SiriusSudokuForm()
 		{
@@ -45,6 +49,7 @@ namespace SiriusSudoku
 		private void SiriusSudokuForm_Load(object sender, EventArgs e)
 		{
 			ReadPlayers();
+			ReadHighScores();
 
 			NumberSelectionPanel.SetNumberCountLimit(TheGameBoard.GridSize);
 			NumberSelectionPanel.OnNumberSelected += NumberSelectionPanel_OnNumberSelected;
@@ -74,10 +79,10 @@ namespace SiriusSudoku
 			}
 
 			WritePlayers();
-
+			WriteHighScores();
 			SaveLocation();
 		}
-
+		
 		private void LoadLocation()
 		{
 			if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.InitialLocation))
@@ -111,45 +116,60 @@ namespace SiriusSudoku
 
 		private void ReadPlayers()
 		{
-			/*
 			if (File.Exists(PLAYERS_FILE))
 			{
-				FileStream playersFileStream = new FileStream(PLAYERS_FILE, FileMode.Open);
-				XmlSerializer playerListSerialiser = new XmlSerializer(typeof(List<Player>));
+				using (Stream stream = File.Open(PLAYERS_FILE, FileMode.Open))
+				{
+					BinaryFormatter bin = new BinaryFormatter();
+					m_players = (List<Player>)bin.Deserialize(stream);
 
-				m_players = (List<Player>)playerListSerialiser.Deserialize(playersFileStream);
+					foreach (Player savedPlayer in m_players)
+					{
+						PlayersToolStripComboBox.Items.Add(savedPlayer);
+					}
+
+					PlayersToolStripComboBox.Text = Properties.Settings.Default.LastPlayer;
+					m_gamePlayer = (Player)PlayersToolStripComboBox.SelectedItem;
+				}
 			}
-			else
+
+			PlayersToolStripComboBox.Items.Insert(0, "New Player");
+		}
+
+		private void ReadHighScores()
+		{
+			if (File.Exists(HIGH_SCORES_FILE))
 			{
-				Player p1 = new Player();
-				p1.PlayerName = "Richard";
-				p1.AverageTimes.Add(Difficulty.Easy, 1);
-				p1.AverageTimes.Add(Difficulty.Medium, 2);
-				p1.AverageTimes.Add(Difficulty.Hard, 3);
-				p1.AverageTimes.Add(Difficulty.Extreme, 4);
-				
-				m_players.Add(p1);
-
-				Player p2 = new Player();
-				p2.PlayerName = "Blake";
-				p2.AverageTimes.Add(Difficulty.Easy, 10);
-				p2.AverageTimes.Add(Difficulty.Medium, 20);
-				p2.AverageTimes.Add(Difficulty.Hard, 30);
-				p2.AverageTimes.Add(Difficulty.Extreme, 40);
-
-				m_players.Add(p2);
-			}
-			*/
+				using (Stream stream = File.Open(HIGH_SCORES_FILE, FileMode.Open))
+				{
+					BinaryFormatter bin = new BinaryFormatter();
+					m_highScores = (Dictionary<Difficulty, List<HighScoreEntry>>)bin.Deserialize(stream);
+				}
+			}			
 		}
 
 		private void WritePlayers()
 		{
-			/*
-			TextWriter writer = new StreamWriter(PLAYERS_FILE, false);
-			XmlSerializer playerListSerialiser = new XmlSerializer(typeof(List<Player>));
+			if (PlayersToolStripComboBox.SelectedIndex > 0)
+			{
+				Properties.Settings.Default.LastPlayer = PlayersToolStripComboBox.SelectedItem.ToString();
+				Properties.Settings.Default.Save();
+			}
 
-			playerListSerialiser.Serialize(writer, m_players);
-			*/
+			using (Stream stream = File.Open(PLAYERS_FILE, FileMode.Create))
+			{
+				BinaryFormatter bin = new BinaryFormatter();
+				bin.Serialize(stream, m_players);
+			}
+		}
+
+		private void WriteHighScores()
+		{
+			using (Stream stream = File.Open(HIGH_SCORES_FILE, FileMode.Create))
+			{
+				BinaryFormatter bin = new BinaryFormatter();
+				bin.Serialize(stream, m_highScores);
+			}
 		}
 
 		private void TheGameBoard_OnCellTapped(Position gridPosition, Position cellPosition)
@@ -169,7 +189,7 @@ namespace SiriusSudoku
 				{
 					m_gameActive = false;
 					PauseToolStripButton.Enabled = false;
-					MessageBox.Show("Congratulations, you have solved the puzzle.");
+
 					SaveHallOfFameEntry();
 				}
 			}
@@ -213,15 +233,62 @@ namespace SiriusSudoku
 			return TheGameBoard.IsSolutionCorrect();
 		}
 
+		private bool GetPlayerName()
+		{
+			NewPlayerForm iNewPlayerForm = new NewPlayerForm();
+
+			if (iNewPlayerForm.ShowDialog(this) == System.Windows.Forms.DialogResult.OK && 
+				iNewPlayerForm.PlayerName.Length > 0)
+			{
+				Player newPlayer = new Player();
+				newPlayer.PlayerName = iNewPlayerForm.PlayerName;
+				m_players.Add(newPlayer);
+				PlayersToolStripComboBox.Items.Add(newPlayer);
+				
+				PlayersToolStripComboBox.Text = newPlayer.PlayerName;
+				m_gamePlayer = (Player)PlayersToolStripComboBox.SelectedItem;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		private void StartNewGame(Difficulty gameDifficulty)
 		{
-			Cursor = Cursors.WaitCursor;
+			if (m_gameActive)
+			{
+				DialogResult answer = MessageBox.Show("A game is currently in progress. Do you want to save the current game?",
+														"Save Game", MessageBoxButtons.YesNoCancel);
 
-			m_generator.GenerateSudokuGrid(gameDifficulty);
+				if (answer == System.Windows.Forms.DialogResult.Yes)
+				{
+					// Save current game.
+				}
+				else if (answer == System.Windows.Forms.DialogResult.Cancel)
+				{
+					return;
+				}
+			}
 
-			StartGame(gameDifficulty);
+			bool startGame = true;
 
-			Cursor = Cursors.Default;
+			if (PlayersToolStripComboBox.SelectedIndex < 1)
+			{
+				startGame = GetPlayerName();
+			}
+
+			if (startGame)
+			{
+				Cursor = Cursors.WaitCursor;
+
+				m_generator.GenerateSudokuGrid(gameDifficulty);
+
+				StartGame(gameDifficulty);
+
+				Cursor = Cursors.Default;
+			}
 		}
 
 		private void StartGame(Difficulty gameDifficulty)
@@ -234,6 +301,11 @@ namespace SiriusSudoku
 			m_gameActive = true;
 			m_gamePaused = false;
 			m_firstMoveMade = false;
+
+			if (gameDifficulty != Difficulty.Restarting)
+			{
+				m_gameDifficulty = gameDifficulty;
+			}
 
 			InitialiseGameHelpers(gameDifficulty);
 
@@ -415,37 +487,109 @@ namespace SiriusSudoku
 
 		private void HallOfFameToolStripButton_Click(object sender, EventArgs e)
 		{
-
+			HighScoresForm iHighScoresForm = new HighScoresForm(m_highScores);
+			iHighScoresForm.ShowDialog(this);
 		}
 
 		private void SaveHallOfFameEntry()
 		{
 			int score = m_gameDurationSeconds;
 			int scoreAdditions = 0;
+			int previousBestTime = m_gamePlayer.BestTime(m_gameDifficulty);
+			int previousGamesPayed = m_gamePlayer.NumberOfGamesPlayed(m_gameDifficulty);
+			float newAverageTime = 0;
+			float previousAverageTime = m_gamePlayer.AverageTime(m_gameDifficulty);
+			string message = string.Empty;
 
 			foreach (GameHelper helper in m_gameHelpers)
 			{
 				scoreAdditions += m_gameDurationSeconds * ((int)helper / 100);
 			}
-						
+
 			int finalScore = score + scoreAdditions;
 
+			if (m_gameDifficulty != Difficulty.Unknown && m_gameDifficulty != Difficulty.Restarting && m_gameDifficulty != Difficulty.UserSupplied)
+			{
+				if (m_gameDurationSeconds < previousBestTime || previousBestTime == 0)
+				{
+					m_gamePlayer.SetBestTime(m_gameDifficulty, m_gameDurationSeconds);
+				}
+				if (previousGamesPayed == 0)
+				{
+					newAverageTime = m_gameDurationSeconds;
+					m_gamePlayer.SetNumberOfGamesPlayed(m_gameDifficulty, 1);
+					m_gamePlayer.SetAverageTime(m_gameDifficulty, m_gameDurationSeconds);
+				}
+				else
+				{
+					newAverageTime = ((previousAverageTime * previousGamesPayed) + m_gameDurationSeconds) / (previousGamesPayed + 1);
+					m_gamePlayer.SetAverageTime(m_gameDifficulty, newAverageTime);
+					m_gamePlayer.SetNumberOfGamesPlayed(m_gameDifficulty, previousGamesPayed + 1);
+				}
+			}
 
-			/*
-			Book introToVCS = new Book();
-			System.Xml.Serialization.XmlSerializer reader = new
-			   System.Xml.Serialization.XmlSerializer(introToVCS.GetType());
 
-			// Read the XML file.
-			System.IO.StreamReader file =
-			   new System.IO.StreamReader("c:\\IntroToVCS.xml");
+			HighScoreEntry newHighScoreEntry = new HighScoreEntry();
+			newHighScoreEntry.GameTime = DateTime.Now;
+			newHighScoreEntry.PlayerName = m_gamePlayer.PlayerName;
+			newHighScoreEntry.GameDifficulty = m_gameDifficulty;
+			newHighScoreEntry.DurationSeconds = m_gameDurationSeconds;
+			newHighScoreEntry.FinalScore = finalScore;
 
-			// Deserialize the content of the file into a Book object.
-			introToVCS = (Book)reader.Deserialize(file);
-			System.Windows.Forms.MessageBox.Show(introToVCS.title,
-			   "Book Title");
-			*/
+			if(m_highScores.ContainsKey(m_gameDifficulty))
+			{
+				m_highScores[m_gameDifficulty].Add(newHighScoreEntry);
+			}
+			else
+			{
+				List<HighScoreEntry> highSocreList = new List<HighScoreEntry>(10);
+				highSocreList.Add(newHighScoreEntry);
+				m_highScores.Add(m_gameDifficulty, highSocreList);
+			}
 
+			WriteHighScores();
+
+
+			message = string.Format("Congratulations, you have solved the puzzle in {0} with a score of {1}.",
+									 GetTimeText(m_gameDurationSeconds), finalScore.ToString());
+
+			if (m_gameDurationSeconds < previousBestTime)
+			{
+				message += string.Format("\r\nBeating your previous best time of {0}.", GetTimeText(previousBestTime));
+			}
+
+			if (newAverageTime < previousAverageTime)
+			{
+				message += string.Format("\r\nImproving your average time from {0} to {1}.", 
+										GetTimeText((int)previousAverageTime), GetTimeText((int)newAverageTime));
+				
+			}
+			else
+			{
+				message += string.Format("\r\nYour average time is {0}.", GetTimeText((int)newAverageTime));
+			}
+
+			MessageBox.Show(message);
+		}
+
+		public static string GetTimeText(int seconds)
+		{
+			string timeText = string.Empty;
+
+			if ((seconds / 3600) > 0)
+			{
+				timeText = (seconds / 3600).ToString("00") + ":" +
+						   ((seconds / 60) % 60).ToString("00") + ":" +
+						   (seconds % 60).ToString("00");
+			}
+			else
+			{
+				timeText = "   " +
+						   ((seconds / 60) % 60).ToString("00") + ":" +
+						   (seconds % 60).ToString("00");
+			}
+
+			return timeText;
 		}
 
 		private void SavePuzzle()
@@ -474,6 +618,18 @@ namespace SiriusSudoku
 				TheGameBoard.Height = GameBoardPanel.ClientSize.Width;
 			}
 			TheGameBoard.Left = (int)(((float)GameBoardPanel.ClientSize.Width / 2.0f) - ((float)TheGameBoard.Width / 2.0f));
+		}
+
+		private void PlayersToolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (PlayersToolStripComboBox.SelectedItem.ToString() == "New Player")
+			{
+				GetPlayerName();
+			}
+			else
+			{
+				m_gamePlayer = (Player)PlayersToolStripComboBox.SelectedItem;
+			}
 		}
 
 

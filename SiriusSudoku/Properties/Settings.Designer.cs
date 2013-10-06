@@ -46,5 +46,17 @@ namespace SiriusSudoku.Properties {
                 this["InitialLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastPlayer {
+            get {
+                return ((string)(this["LastPlayer"]));
+            }
+            set {
+                this["LastPlayer"] = value;
+            }
+        }
     }
 }
