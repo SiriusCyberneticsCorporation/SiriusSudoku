@@ -88,7 +88,8 @@ namespace SiriusSudoku
 			}
 			else if (m_numberGiven)
 			{
-				throw new Exception("PencilInNumber() - This square has a given number.");
+				return;
+				//throw new Exception("PencilInNumber() - This square has a given number.");
 			}
 
 			if (m_numbersPencilled.Contains(number))
